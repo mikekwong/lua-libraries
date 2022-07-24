@@ -85,6 +85,34 @@ function dumpOther(value, call_indent)
 end
 
 --[[
+    Divides quads we've generated via slicing our tile sheet into separate tile sets.
+]]
+function GenerateTileSets(quads, setsX, setsY, sizeX, sizeY)
+    local tilesets = {}
+    local tableCounter = 0
+    local sheetWidth = setsX * sizeX
+    local sheetHeight = setsY * sizeY
+
+    -- for each tile set on the X and Y
+    for tilesetY = 1, setsY do
+        for tilesetX = 1, setsX do
+
+            -- tileset table
+            table.insert(tilesets, {})
+            tableCounter = tableCounter + 1
+
+            for y = sizeY * (tilesetY - 1) + 1, sizeY * (tilesetY - 1) + 1 + sizeY do
+                for x = sizeX * (tilesetX - 1) + 1, sizeX * (tilesetX - 1) + 1 + sizeX do
+                    table.insert(tilesets[tableCounter], quads[sheetWidth * (y - 1) + x])
+                end
+            end
+        end
+    end
+
+    return tilesets
+end
+
+--[[
 	Recursive table printing function including memory address
 ]]
 function print_r(t)
